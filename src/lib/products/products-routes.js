@@ -34,15 +34,12 @@ function addProducts(req, res, next) {
         })
 }
 function updateProducts(req, res, next) {
-    // console.log('__________________',req,body)
     products.update(req.params.id, req.body)
         .then(data => {
-            // console.log(data)
             res.status(200).json(data);
         }).catch(next)
 }
 function deleteProducts(req, res, next) {
-    // console.log('**************************',req,body)
     products.delete(req.params.id)
         .then(data => {
             res.status(200).json(data);

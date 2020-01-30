@@ -6,11 +6,10 @@ const mockRequest = supergose(server);
 
 describe('Categories API Test', () => {
     it('post a new categorie item', () => {
-        let obj = { _id: '1', name: 'Test 1 categories' };
+        let obj = {  name: 'Test 1 categories' };
         return mockRequest.post('/api/v1/categories')
             .send(obj)
             .then(data => {
-                // console.log('***********', data.body);
                 let record = data.body;
                 Object.keys(obj).forEach(key => {
                     expect(record[key]).toEqual(obj[key]);
@@ -18,7 +17,7 @@ describe('Categories API Test', () => {
             });
     });
     it('respond properly to a get request to /api/v1/categories', () => {
-        let obj = {  _id: '2', name: 'Test 1 categories' };
+        let obj = { name: 'Test 1 categories' };
         return mockRequest
             .get('/api/v1/categories')
             .then(results => {
@@ -26,43 +25,49 @@ describe('Categories API Test', () => {
                 expect(typeof results.body).toBe('object');
             });
     });
-
+    it('get one category item', () => {
+        let testObj = { name:'Test for get one category'};
+        return mockRequest.post('/api/v1/categories')
+          .send(testObj)
+          .then(data => {
+            return mockRequest.get(`/api/v1/categories/${data.body._id}`)
+            .then(data => {
+              let record = data.body[0];
+              Object.keys(testObj).forEach(key => {
+                expect(record[key]).toEqual(testObj[key]);
+            });
+          });
+        });
+      });
     it('respond properly to a delete request to /api/v1/categories/:id', () => {
+        let obj = { name: 'Test 3 categories' };
         return mockRequest
             .post('/api/v1/categories')
-            .send({ _id: '3', name: 'TEST 3' })
+            .send(obj)
             .then(data => {
-                // console.log(data.body)
                 return mockRequest
-                    .delete(`/api/v1/categories/:${data.body.id}`)
-                    .send({ _id: '3', name: 'TEST 3' })
-                    .then(results => {
-                        // console.log('************************', results.body);
-                        expect(results.status).toBe(200);
-                        expect(results.body.data).toBeNull();
-                        expect(results.body.msg).toEqual('Item is deleted');
-                    });
+                .delete(`/api/v1/categories/${data.body._id}`)
+                .send(obj)
+                .then(prod => {
+                  return mockRequest.get(`/api/v1/categories/${data.body._id}`)
+                  .then(results => {
+                  expect(results.status).toBe(200);
+                  expect(results.body[0]).toBe();
+                  });
+                });
             });
     });
     it('respond properly to a update request to /api/v1/categories/:id', () => {
-        let obj = { _id: '4', name: 'Test 4 categories' };
+        let obj = { name: 'Test 4 categories' };
         return mockRequest.post('/api/v1/categories')
             .send(obj)
             .then(data => {
-                console.log(data.body)
-                let id = parseInt(data.body._id)
-                return mockRequest.put(`/api/v1/categories/:${id}`)
-                .send({name: 'TEST 4 IS UPDATED', id: '4'})
-                .then(category => {
-                    // console.log(category.body._id)
-                return mockRequest.get(`/api/v1/categories/:${id}`)
+                return mockRequest.put(`/api/v1/categories/${data.body._id}`)
+                .send({name: 'TEST IS UPDATED'})
                 .then(results=>{
-                    console.log(results)
                         expect(results.status).toBe(200);
-                        expect(results.body.name).toEqual('TEST 4 IS UPDATED');
-                        expect(results.body._id).toEqual('4');
+                        expect(results.body.name).toEqual('TEST IS UPDATED');
                     });
             });
     });
-});
 });

@@ -30,13 +30,16 @@ describe('Products API', () => {
     return mockRequest.post('/api/v1/products')
       .send(testObj)
       .then(data => {
-        console.log(data.body, data.params)
-        return mockRequest.get(`/api/v1/products/:${data.body._id}`)
-        .then(results=>{
-          console.log(results.body)
-        })
-      })
-    })
+        return mockRequest.get(`/api/v1/products/${data.body._id}`)
+        .then(data => {
+          let record = data.body[0];
+          Object.keys(testObj).forEach(key => {
+            expect(record[key]).toEqual(testObj[key]);
+        });
+      });
+    });
+  });
+
   it('respond properly to a delete request to /api/v1/products/:id', () => {
     let obj = { name: 'dates', price: 125, quantity_in_stock: 2000 };
     return mockRequest
@@ -44,12 +47,15 @@ describe('Products API', () => {
       .send(obj)
       .then(data => {
         return mockRequest
-          .delete(`/api/v1/products/:${data.body._id}`)
-          .then(results => {
-            // console.log(results.body)
+          .delete(`/api/v1/products/${data.body._id}`)
+          .send(obj)
+          .then(prod => {
+            return mockRequest.get(`/api/v1/products/${data.body._id}`)
+            .then(results => {
             expect(results.status).toBe(200);
-            expect(results.body).toBeNull();
+            expect(results.body[0]).toBe();
           });
+        });
     })
   });
   it('respond properly to a update request to /api/v1/products/:id', () => {
@@ -57,14 +63,9 @@ describe('Products API', () => {
     return mockRequest.post('/api/v1/products')
       .send(obj)
         .then(data=>{
-          // console.log(data.body)
-        return mockRequest.put(`/api/v1/products/:${data.body._id}`)
+        return mockRequest.put(`/api/v1/products/${data.body._id}`)
         .send({ name: 'Item is UPDATED', price: 10, quantity_in_stock: 999})
-        // .then(data => {
-          // return mockRequest
-          // .get(`/api/v1/products/:${data.body._id}`)
           .then(results=>{
-            console.log(results.body)
             expect(results.status).toBe(200);
             expect(results.body.name).toEqual('Item is UPDATED');
             expect(results.body.price).toEqual(10);
@@ -72,6 +73,4 @@ describe('Products API', () => {
           });
         });
       });
-    // })
-
 });

@@ -24,7 +24,7 @@ class Model {
   }
 
   delete(_id) {
-    return this.schema.findByIdAndDelete(_id);
+    return this.schema.deleteMany({_id});
   }
 }
 

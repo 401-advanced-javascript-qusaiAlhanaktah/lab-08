@@ -35,23 +35,19 @@ function addCategories(req, res, next) {
         })
 }
 function updateCategories(req, res, next) {
-    console.log(req.params.id, req.body)
     categories.update(req.params.id, req.body)
         .then(data => {
-            console.log(data)
             res.status(200).json(data);
         })
 }
 
 function deleteCategories(req, res, next) {
-    // console.log(req.body)
     categories.delete(req.params.id)
         .then(data => {
             let output ={
-                data: data,
+                results: data,
                 msg: 'Item is deleted'
             }
-            // console.log(data)
             res.status(200).json(output);
         })
 }

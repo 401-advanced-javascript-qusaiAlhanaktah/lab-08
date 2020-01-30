@@ -24,4 +24,4 @@ npm i jest eslint
      - evey test solved and another time i will cover more cases.
 #### UML
 Link to an image of the UML for your application and response to events
-![White-Board](assets/)
+![White-Board](assets/WIN_20200130_16_32_29_Pro.jpg)
