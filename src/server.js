@@ -16,9 +16,9 @@ app.use('/api/v1', categoriesRoutes);
 app.use('/api/v1', productsRoutes);
 
 module.exports = {
-    server: app,
-    start: port =>{
-      let PORT = port || process.env.PORT || 3000;
-      app.listen(PORT,()=>console.log(`server is listening to port: ${PORT}`))
-    }
+  server: app,
+  start: port =>{
+    let PORT = port || process.env.PORT || 3000;
+    app.listen(PORT,()=>console.log(`server is listening to port: ${PORT}`))
+  }
 }
