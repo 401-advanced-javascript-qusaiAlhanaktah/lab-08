@@ -1,4 +1,4 @@
-'use strict';
+
 
 const { server } = require('../server.js');
 const supergoose = require('@code-fellows/supergoose');
@@ -6,7 +6,7 @@ const mockRequest = supergoose(server);
 
 describe('Products API', () => {
   it('post a new product item', () => {
-    let testObj = { name: 'apple', price: 25, quantity_in_stock: 200 };
+    let testObj = { name: 'apple', price: 25, quantityInStock: 200 };
     return mockRequest.post('/api/v1/products')
       .send(testObj)
       .then(data => {
@@ -26,7 +26,7 @@ describe('Products API', () => {
       });
   });
   it('get one product item', () => {
-    let testObj = { name: 'apple', price: 25, quantity_in_stock: 200 };
+    let testObj = { name: 'apple', price: 25, quantityInStock: 200 };
     return mockRequest.post('/api/v1/products')
       .send(testObj)
       .then(data => {
@@ -41,7 +41,7 @@ describe('Products API', () => {
   });
 
   it('respond properly to a delete request to /api/v1/products/:id', () => {
-    let obj = { name: 'dates', price: 125, quantity_in_stock: 2000 };
+    let obj = { name: 'dates', price: 125, quantityInStock: 2000 };
     return mockRequest
       .post('/api/v1/products')
       .send(obj)
@@ -59,17 +59,17 @@ describe('Products API', () => {
       });
   });
   it('respond properly to a update request to /api/v1/products/:id', () => {
-    let obj = {name: 'apple', price: 25, quantity_in_stock: 200 };
+    let obj = {name: 'apple', price: 25, quantityInStock: 200 };
     return mockRequest.post('/api/v1/products')
       .send(obj)
       .then(data=>{
         return mockRequest.put(`/api/v1/products/${data.body._id}`)
-          .send({ name: 'Item is UPDATED', price: 10, quantity_in_stock: 999})
+          .send({ name: 'Item is UPDATED', price: 10, quantityInStock: 999})
           .then(results=>{
             expect(results.status).toBe(200);
             expect(results.body.name).toEqual('Item is UPDATED');
             expect(results.body.price).toEqual(10);
-            expect(results.body.quantity_in_stock).toEqual(999);
+            expect(results.body.quantityInStock).toEqual(999);
           });
       });
   });

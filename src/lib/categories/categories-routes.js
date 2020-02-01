@@ -1,4 +1,4 @@
-'use strict';
+
 
 const express = require('express');
 const categories = require('./categories-model.js');
@@ -17,8 +17,8 @@ function getCategories(req, res, next) {
       const output = {
         count: data.length,
         results: data,
-      }
-      res.status(200).json(output);   
+      };
+      res.status(200).json(output);
     }).catch(next);
 }
 function getOneCategory(req, res, next) {
@@ -31,23 +31,23 @@ function addCategories(req, res, next) {
   categories.create(req.body)
     .then(data => {
       res.status(201).json(data);
-    });
+    }).catch(next);
 }
 function updateCategories(req, res, next) {
   categories.update(req.params.id, req.body)
     .then(data => {
       res.status(200).json(data);
-    });
+    }).catch(next);
 }
 
 function deleteCategories(req, res, next) {
   categories.delete(req.params.id)
     .then(data => {
-      let output ={
+      let output = {
         results: data,
-        msg: 'Item is deleted'
-      }
+        msg: 'Item is deleted',
+      };
       res.status(200).json(output);
-    })
+    }).catch(next);
 }
 module.exports = router;

@@ -1,4 +1,4 @@
-'use strict';
+
 
 const { server } = require('../server.js');
 const supergose = require('@code-fellows/supergoose');
